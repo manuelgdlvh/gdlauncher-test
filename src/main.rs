@@ -153,6 +153,6 @@ fn is_number_valid(target: u128, candidates: &[u128]) -> bool {
         .any(|(idx, &outer_ref)| {
             candidates.iter()
                 .skip(idx + 1)
-                .any(|&inner_ref| inner_ref <= target && inner_ref + outer_ref == target)
+                .any(|&inner_ref| inner_ref + outer_ref == target)
         })
 }
