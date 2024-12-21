@@ -135,20 +135,13 @@ fn process_next_number(result: &mut Vec<u128>, numbers: &mut [u128; NUMBERS_BUFF
         result.push(numbers[0]);
     }
 
-    add_number(numbers, new_number);
+    numbers.rotate_left(1);
+    numbers[ITEM_RANGE_SIZE] = new_number;
 }
 
 fn parse_number_from_str_buffer(str_buffer: &[u8]) -> u128 {
     let number_str = std::str::from_utf8(str_buffer).expect("Parse byte buffer to str successfully");
     u128::from_str(number_str).expect("Parse number from str successfully")
-}
-
-
-fn add_number(numbers: &mut [u128; NUMBERS_BUFFER_SIZE], number: u128) {
-    for i in 0..ITEM_RANGE_SIZE {
-        numbers[i] = numbers[i + 1];
-    }
-    numbers[ITEM_RANGE_SIZE] = number;
 }
 
 
