@@ -20,6 +20,11 @@ const STR_U128_LEN: usize = 39;
 
 // This solution identifies and calculates all invalid numbers in the given input file and not only the first one.
 fn main() -> anyhow::Result<()> {
+
+    let start = SystemTime::now()
+        .duration_since(UNIX_EPOCH)
+        .expect("Time went backwards").as_micros();
+
     let parallelism = max(MIN_PARALLELISM, available_parallelism()?.get());
     let current_dir = env::current_dir()?;
     let current_dir_str = current_dir.to_str().context("Path to str conversion failed")?;
@@ -28,19 +33,14 @@ fn main() -> anyhow::Result<()> {
     let file = File::open(file_path)?;
     let mmap = unsafe { MmapOptions::new().map(&file) }?;
 
-
-    let start = SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .expect("Time went backwards").as_millis();
-
     let result: Vec<u128> = get_bounds(&mmap, parallelism)
         .par_iter()
         .flat_map(|(left, right)| process(&mmap, *left, *right))
         .collect();
 
-    println!("{} ms", SystemTime::now()
+    println!("{} microseconds", SystemTime::now()
         .duration_since(UNIX_EPOCH)
-        .expect("Time went backwards").as_millis() - start);
+        .expect("Time went backwards").as_micros()- start);
 
     println!("{} invalid numbers found.\n{:?}", result.len(), result);
     Ok(())
