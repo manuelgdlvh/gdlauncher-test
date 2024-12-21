@@ -18,7 +18,7 @@ const MARGIN_AVOID_LINE_BREAK: usize = 2;
 const SPLIT_MARKER: u8 = b'\n';
 const STR_U128_LEN: usize = 39;
 
-
+// This solution identifies and calculates all invalid numbers in the given input file and not only the first one.
 fn main() -> anyhow::Result<()> {
     let parallelism = max(MIN_PARALLELISM, available_parallelism()?.get());
     let current_dir = env::current_dir()?;
