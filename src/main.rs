@@ -151,13 +151,15 @@ fn add_number(numbers: &mut [u128; NUMBERS_BUFFER_SIZE], number: u128) {
     numbers[ITEM_RANGE_SIZE] = number;
 }
 
+
+// Skip all numbers greater than the target (excluding the target itself). The target and 0 may still be valid candidates together.
 fn is_number_valid(target: u128, candidates: &[u128]) -> bool {
     for (idx, outer_ref) in candidates.iter().enumerate() {
-        if *outer_ref >= target {
+        if *outer_ref > target {
             continue;
         }
         for inner_ref in candidates.iter().skip(idx + 1) {
-            if *inner_ref >= target {
+            if *inner_ref > target {
                 continue;
             }
 
