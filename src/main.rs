@@ -106,7 +106,7 @@ fn process(mmap: &Mmap, left_bound: usize, right_bound: usize) -> Vec<u128> {
             continue;
         }
 
-        let new_number = parse_number_from_str_buffer(&str_buffer[str_buffer_idx..39]);
+        let new_number = parse_number_from_str_buffer(&str_buffer[str_buffer_idx..STR_U128_LEN]);
         if numbers_idx == NUMBERS_BUFFER_SIZE {
             process_next_number(&mut result, &mut numbers, new_number);
         } else {
@@ -119,7 +119,7 @@ fn process(mmap: &Mmap, left_bound: usize, right_bound: usize) -> Vec<u128> {
         str_buffer_idx = STR_U128_LEN;
     }
 
-    let new_number = parse_number_from_str_buffer(&str_buffer[str_buffer_idx..39]);
+    let new_number = parse_number_from_str_buffer(&str_buffer[str_buffer_idx..STR_U128_LEN]);
     process_next_number(&mut result, &mut numbers, new_number);
 
     if !is_number_valid(numbers[0], &numbers[1..=ITEM_RANGE_SIZE]) {
