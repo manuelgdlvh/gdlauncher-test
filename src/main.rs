@@ -147,20 +147,12 @@ fn parse_number_from_str_buffer(str_buffer: &[u8]) -> u128 {
 
 // Skip all numbers greater than the target (excluding the target itself). The target and 0 may still be valid candidates together.
 fn is_number_valid(target: u128, candidates: &[u128]) -> bool {
-    for (idx, &outer_ref) in candidates.iter().enumerate() {
-        if outer_ref > target {
-            continue;
-        }
-        for &inner_ref in candidates.iter().skip(idx + 1) {
-            if inner_ref > target {
-                continue;
-            }
-
-            if inner_ref + outer_ref == target {
-                return true;
-            }
-        }
-    }
-
-    false
+    candidates.iter()
+        .enumerate()
+        .filter(|(idx, &outer_ref)| outer_ref <= target)
+        .any(|(idx, &outer_ref)| {
+            candidates.iter()
+                .skip(idx + 1)
+                .any(|&inner_ref| inner_ref <= target && inner_ref + outer_ref == target)
+        })
 }
