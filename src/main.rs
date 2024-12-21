@@ -99,10 +99,10 @@ fn process(mmap: &Mmap, left_bound: usize, right_bound: usize) -> Vec<u128> {
     let mut numbers_idx = 0;
 
     let mut result = Vec::new();
-    for byte in mmap[left_bound..=right_bound].into_iter().rev() {
-        if *byte != SPLIT_MARKER {
+    for &byte in mmap[left_bound..=right_bound].iter().rev() {
+        if byte != SPLIT_MARKER {
             str_buffer_idx -= 1;
-            str_buffer[str_buffer_idx] = *byte;
+            str_buffer[str_buffer_idx] = byte;
             continue;
         }
 
@@ -147,16 +147,16 @@ fn parse_number_from_str_buffer(str_buffer: &[u8]) -> u128 {
 
 // Skip all numbers greater than the target (excluding the target itself). The target and 0 may still be valid candidates together.
 fn is_number_valid(target: u128, candidates: &[u128]) -> bool {
-    for (idx, outer_ref) in candidates.iter().enumerate() {
-        if *outer_ref > target {
+    for (idx, &outer_ref) in candidates.iter().enumerate() {
+        if outer_ref > target {
             continue;
         }
-        for inner_ref in candidates.iter().skip(idx + 1) {
-            if *inner_ref > target {
+        for &inner_ref in candidates.iter().skip(idx + 1) {
+            if inner_ref > target {
                 continue;
             }
 
-            if *inner_ref + *outer_ref == target {
+            if inner_ref + outer_ref == target {
                 return true;
             }
         }
